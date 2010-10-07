@@ -1,0 +1,52 @@
+title: cqueue protocol
+author: Claus Albøge
+date: 2010.10.05
+language: english
+
+! Commands
+
+!! add (producer)
+
+add [queue] [bytes] [data]//
+
+ OK ACCEPTED//
+ [id]
+
+ NOK REJECTED//
+ [reason]
+
+!! reserve (worker)
+
+reserve [queue]
+
+ OK RESERVED//
+ [id] [bytes] [data]
+
+ NOK NO JOBS
+
+!! report (worker)
+report [id] [status] [bytes] [data]//
+
+!! status (producer)
+
+status [id]//
+
+
+ OK <status> <bytes> <data>
+
+
+! Lifecycle diagram
+{{{
+
+ P:add              W:reserve                W:report OK
+--------> [QUEUED] ------------> [RESERVED] ---------------> [PROCESSED] 
+             ^                     |  |
+              \  W:report TMPFAIL  |  |  W:report PERMFAIL 
+               --------------------'  '--------------------> [NEEDS ATTENTION]
+}}}
+                                   
+                                      
+
+ 
+
+
