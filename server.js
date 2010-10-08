@@ -3,7 +3,7 @@ var sys = require('sys');
 var linebuffer = require('linebuffer');
 
 var version = "0.1b";
-
+var state = 0;
 
 var server = net.createServer(function (stream) {
     stream.setEncoding('utf8');
@@ -14,20 +14,31 @@ var server = net.createServer(function (stream) {
     stream.on('data', function (data) {
 	//stream.write(data)
 	sys.debug("data: \n"+data);
-	// add, reserve, report, status
-	if (data.search(/^add/i) == 0) {
-	    sys.debug('ADD');
-	}
-	if (data.search(/^reserve/i) == 0) {
-	    sys.debug('RESERVE');
-	}
-	if (data.search(/^report/i) == 0) {
-	    sys.debug('REPORT');
-	}
-	if (data.search(/^status/i) == 0) {
-	    sys.debug('STATUS');
-	}
 
+	if (state == 0) {
+	    var command = data.split(" ");
+	    switch(command[0].trim().toUpperCase()) {
+	    case "ADD":
+		sys.debug('ADD '+ command.slice(-2));
+		state=1
+		break;
+	    case "RESERVE":
+		sys.debug('RESERVE');
+		break;
+	    case "REPORT":
+		sys.debug('REPORT');
+		break;
+	    case "STATUS":
+		sys.debug('STATUS');
+		break;
+	    default:
+		stream.write('ERR, Unknown command\r\n');
+		sys.debug('UNKNOWN');
+	    }
+	} else {
+	    sys.debug('DATA: '+data );
+	    state=0;
+	}
     });
 });
  

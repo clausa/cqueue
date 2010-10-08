@@ -7,32 +7,37 @@ language: english
 
 !! add (producer)
 
-add [queue] [bytes] [data]//
+add [queue] [bytes]\r\n//
+[data]\r\n//
 
- OK ACCEPTED//
+ OK, ACCEPTED//
  [id]
 
- NOK REJECTED//
- [reason]
+ ERR, [reason]//
 
 !! reserve (worker)
 
 reserve [queue]
 
- OK RESERVED//
- [id] [bytes] [data]
+ OK, RESERVED//
+ [id] [bytes]//
+ [data]
 
- NOK NO JOBS
+ ERR, [reason]
 
 !! report (worker)
-report [id] [status] [bytes] [data]//
+report [id] [status] [bytes]//
+[data]//
+
+ OK//
+
+ ERR, [reason]
 
 !! status (producer)
 
 status [id]//
 
-
- OK <status> <bytes> <data>
+ OK, <status> <bytes> <data>
 
 
 ! Lifecycle diagram
