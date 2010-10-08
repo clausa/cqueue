@@ -43,27 +43,3 @@ var server = net.createServer(function (stream) {
 });
  
 server.listen(8000);
-
-/*
-* Display upload form
-*/
-function display_form(req, res) {
-    res.writeHead(200, {"Content-Type": "text/html"});
-    res.write(
-        '<form action="/upload" method="post" enctype="multipart/form-data">'+
-            '<input type="file" name="upload-file">'+
-            '<input type="submit" value="Upload">'+
-            '</form>'
-    );
-    res.end();
-}
-
-function show(req, res, data) {
-    sys.debug("REQ: "+data+"");
-    res.writeHead(200, {"Content-Type": "text/html"});
-    res.write("Got "+data+" request!");
-    res.write("<form action=/ method=post><input type=text name=q></form>");
-    res.end();
-}
-
-
